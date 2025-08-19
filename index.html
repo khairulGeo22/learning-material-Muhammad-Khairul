@@ -3,390 +3,474 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modul Digital IPS – Transaksi Ekonomi di Era Digital (Karya: Muhammad Khairul, S.Pd, M.Pd)</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js -->
+  <title>Modul Digital IPS – Transaksi Ekonomi di Era Digital | Karya: Muhammad Khairul, S.Pd, M.Pd</title>
+  <!-- Chart.js only (tanpa framework) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    html{scroll-behavior:smooth}
-    /* animasi sederhana */
-    .fade-up{opacity:0;transform:translateY(16px);transition:all .6s ease}
-    .fade-up.show{opacity:1;transform:translateY(0)}
-    /* gaya cetak */
-    @media print{
-      nav, .no-print, .sticky-tools{display:none!important}
-      .printable{box-shadow:none;border:none}
-      body{background:#fff}
+    /* =============== THEME & RESET =============== */
+    :root{
+      --bg1:#f0f7ff; --bg2:#fef6ff; --ink:#0f172a;
+      --grad: linear-gradient(115deg,#4f46e5, #06b6d4 50%, #f43f5e);
+      --card: rgba(255,255,255,.85); --glass: rgba(255,255,255,.6);
+      --ring: rgba(79,70,229,.35);
+      --ok:#16a34a; --warn:#f59e0b; --bad:#dc2626;
     }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);
+      background: radial-gradient(1200px 800px at 20% -10%, #e0f2fe, transparent),
+                  radial-gradient(900px 700px at 120% 10%, #ffe4e6, transparent),
+                  radial-gradient(700px 600px at -10% 110%, #ede9fe, transparent),
+                  #ffffff;}
+    a{color:inherit}
+    img{max-width:100%;display:block}
+    .container{max-width:1100px;margin-inline:auto;padding:0 18px}
+
+    /* =============== NAVBAR =============== */
+    .nav{position:sticky;top:0;z-index:40;backdrop-filter:saturate(1.2) blur(10px);background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.65));
+      border-bottom:1px solid #e5e7eb}
+    .nav .inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .brand .logo{width:36px;height:36px;border-radius:12px;background:var(--grad);box-shadow:0 6px 18px rgba(79,70,229,.35)}
+    .menu{display:flex;gap:14px;flex-wrap:wrap}
+    .menu a{padding:8px 12px;border-radius:12px;text-decoration:none;border:1px solid transparent}
+    .menu a:hover{background:var(--glass);border-color:var(--ring)}
+    .btn{border:none;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:600}
+    .btn-primary{background:var(--grad);color:white;box-shadow:0 8px 20px rgba(79,70,229,.35)}
+    .btn-ghost{background:transparent;border:1px solid #e5e7eb}
+
+    /* =============== HERO =============== */
+    .hero{padding:56px 0;background:
+      radial-gradient(1200px 600px at 70% -20%, #e0e7ff 0%, transparent 60%),
+      radial-gradient(900px 600px at -10% 10%, #cffafe 0%, transparent 60%)}
+    .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center}
+    .badge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.85);border:1px solid #e5e7eb;font-size:12px}
+    .hero h1{font-size: clamp(28px, 4vw, 44px);line-height:1.15;margin:10px 0}
+    .hero p{opacity:.85}
+    .hero-ill{border-radius:24px;padding:18px;background:var(--card);border:1px solid #e5e7eb;box-shadow:0 16px 40px rgba(2,6,23,.12)}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+    .chip{background:var(--glass);border:1px solid #e5e7eb;border-radius:12px;padding:8px 10px;text-align:center}
+
+    /* =============== SECTIONS =============== */
+    section{margin:28px 0}
+    .card{background:var(--card);border:1px solid #e5e7eb;border-radius:18px;padding:18px;box-shadow:0 10px 28px rgba(2,6,23,.08)}
+    .title{display:flex;align-items:center;gap:10px;margin:0 0 12px 0}
+    .title .icon{width:28px;height:28px;border-radius:10px;display:grid;place-items:center;background:var(--glass);border:1px solid #e5e7eb}
+    .muted{opacity:.7}
+
+    /* =============== GRID & CARDS =============== */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    @media (max-width: 900px){.hero-grid,.grid-2{grid-template-columns:1fr}.grid-4{grid-template-columns:repeat(2,1fr)}}
+
+    /* =============== INFO BOXES =============== */
+    .ibox{border-radius:16px;padding:14px;border:1px dashed #cbd5e1;background:linear-gradient(180deg,#ffffff, #fafafa)}
+    .ibox h4{margin:4px 0 8px 0}
+
+    /* =============== CHART CARDS =============== */
+    .chart-wrap{padding:14px;border-radius:16px;border:1px solid #e5e7eb;background:#fff}
+
+    /* =============== SIMULATOR =============== */
+    .slider{width:100%}
+    .kpi{display:flex;gap:8px;align-items:center}
+    .kpi b{font-size:18px}
+
+    /* =============== QUIZ =============== */
+    .quiz{display:grid;gap:16px}
+    .qcard{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:14px;transition:transform .25s}
+    .qcard:hover{transform:translateY(-4px)}
+    .opt{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid #e5e7eb;border-radius:12px;margin:8px 0;cursor:pointer;background:linear-gradient(180deg,#fff,#fafafa)}
+    .opt .badge{width:28px;height:28px;border-radius:8px;background:var(--glass);display:grid;place-items:center;border:1px solid #e5e7eb}
+    .opt.correct{border-color:rgba(22,163,74,.5);background:linear-gradient(180deg,#ecfdf5,#d1fae5)}
+    .opt.wrong{border-color:rgba(220,38,38,.4);background:linear-gradient(180deg,#fef2f2,#fee2e2)}
+    .scorebar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden}
+    .scorebar>span{display:block;height:100%;background:var(--grad);width:0%}
+
+    /* =============== TABLE / LKPD =============== */
+    table{width:100%;border-collapse:collapse;border:1px solid #e5e7eb;background:#fff;border-radius:14px;overflow:hidden}
+    th,td{border:1px solid #e5e7eb;padding:10px;text-align:left}
+    th{background:#f8fafc}
+    textarea{width:100%;min-height:70px;resize:vertical}
+
+    /* =============== MISC =============== */
+    .float-tools{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:10px}
+    .ghost{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:10px 12px;box-shadow:0 8px 20px rgba(2,6,23,.08)}
+    @media print{.nav,.float-tools,.ghost.print-hide{display:none} body{background:#fff}} 
+    .fade{opacity:0;transform:translateY(14px);transition:all .6s ease}
+    .fade.show{opacity:1;transform:translateY(0)}
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800">
-  <!-- NAVBAR -->
-  <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-    <div class="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <span class="inline-flex p-2 rounded-xl bg-indigo-100 text-indigo-700">
-          <!-- cart icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9m-6-9v9"/></svg>
-        </span>
-        <div>
-          <p class="text-[10px] uppercase tracking-wider text-slate-500">Modul Digital IPS</p>
-          <h1 class="font-bold -mt-1">Transaksi Ekonomi di Era Digital</h1>
-        </div>
+<body>
+  <!-- ==================== NAV ==================== -->
+  <div class="nav">
+    <div class="inner container">
+      <div class="brand"><div class="logo"></div><div>Modul Digital IPS</div></div>
+      <div class="menu">
+        <a href="#tujuan">Tujuan</a>
+        <a href="#materi">Materi</a>
+        <a href="#grafik">Grafik</a>
+        <a href="#simulator">Simulator</a>
+        <a href="#pembayaran">Pembayaran</a>
+        <a href="#lkpd">LKPD</a>
+        <a href="#kuis">Kuis</a>
       </div>
-      <ul class="hidden md:flex gap-6 text-sm">
-        <li><a href="#tujuan" class="hover:text-indigo-600">Tujuan</a></li>
-        <li><a href="#materi" class="hover:text-indigo-600">Materi</a></li>
-        <li><a href="#simulator" class="hover:text-indigo-600">Simulator</a></li>
-        <li><a href="#pembayaran" class="hover:text-indigo-600">Sistem Pembayaran</a></li>
-        <li><a href="#kuis" class="hover:text-indigo-600">Kuis</a></li>
-        <li><a href="#lkpd" class="hover:text-indigo-600">LKPD</a></li>
-      </ul>
-      <div class="flex items-center gap-2">
-        <button id="btnPrint" class="no-print text-sm px-3 py-2 rounded-lg border hover:bg-slate-50">Cetak / PDF</button>
-      </div>
+      <button id="btnPrint" class="btn btn-ghost">🖨️ Cetak/PDF</button>
     </div>
-  </nav>
+  </div>
 
-  <!-- HERO -->
-  <header class="relative overflow-hidden bg-gradient-to-br from-indigo-600 to-sky-500 text-white">
-    <div class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-8 items-center">
+  <!-- ==================== HERO ==================== -->
+  <header class="hero">
+    <div class="container hero-grid">
       <div>
-        <span class="text-xs bg-white/20 rounded-full px-3 py-1">Karya: <b>Muhammad Khairu, S.Pd, M.Pd</b></span>
-        <h2 class="text-3xl md:text-5xl font-extrabold leading-tight mt-3">Perkembangan Transaksi Ekonomi di Era Digital</h2>
-        <p class="mt-3 text-white/90">Dua pergeseran besar – <b>transportasi</b> & <b>komunikasi</b> – melahirkan perdagangan yang lebih cepat, mudah, dan luas. Mari jelajahi e‑commerce, sistem pembayaran modern, serta etika dan keamanannya.</p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#tujuan" class="px-4 py-2 bg-white text-indigo-700 rounded-xl font-semibold shadow hover:shadow-md">Mulai Belajar</a>
-          <a href="#kuis" class="px-4 py-2 border border-white/60 rounded-xl hover:bg-white/10">Langsung ke Kuis</a>
+        <span class="badge">Karya: <b>Muhammad Khairu, S.Pd, M.Pd</b></span>
+        <h1>Perkembangan Transaksi Ekonomi di Era Digital</h1>
+        <p>Transportasi 🚚 dan Komunikasi 📱 melesat → perdagangan makin cepat, murah, dan luas. Kenali E‑Commerce, sistem pembayaran modern, serta cara aman bertransaksi (R‑E‑P).</p>
+        <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn btn-primary" href="#tujuan">Mulai Belajar</a>
+          <a class="btn btn-ghost" href="#kuis">Ke Kuis</a>
+        </div>
+        <div class="grid-3">
+          <div class="chip">⏱️ 2×40 menit</div>
+          <div class="chip">🧠 Pengetahuan + Praktek</div>
+          <div class="chip">🧪 Simulator Interaktif</div>
         </div>
       </div>
-      <div class="fade-up">
-        <img src="https://cdn.pixabay.com/photo/2017/08/10/03/49/ecommerce-2617014_1280.jpg" alt="Transaksi digital" class="rounded-2xl shadow-2xl border-white/20 border"/>
-        <p class="text-xs mt-2 text-white/80">Gambar 2.8 Transaksi di dunia digital — Sumber: mediamodifier/pixabay (2019)</p>
+      <div class="hero-ill">
+        <div class="grid-3">
+          <div class="ibox"><h4>🚚 Transportasi</h4><p class="muted">Pengiriman cepat, pelacakan real‑time</p></div>
+          <div class="ibox"><h4>📡 Komunikasi</h4><p class="muted">Negosiasi & layanan daring</p></div>
+          <div class="ibox"><h4>🛒 E‑Commerce</h4><p class="muted">Toko online 24/7</p></div>
+        </div>
+        <div class="grid-3">
+          <div class="ibox"><h4>💳 Pembayaran</h4><p class="muted">Bank, e‑wallet, QRIS</p></div>
+          <div class="ibox"><h4>🔒 Keamanan</h4><p class="muted">OTP, 2FA, kanal resmi</p></div>
+          <div class="ibox"><h4>📈 Pertumbuhan</h4><p class="muted">Skala & nilai transaksi</p></div>
+        </div>
       </div>
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 space-y-12">
-    <!-- TUJUAN & AGENDA -->
-    <section id="tujuan" class="printable -mt-8 bg-white rounded-2xl shadow p-6 fade-up">
-      <div class="flex items-center gap-2 mb-3">
-        <span class="p-2 rounded-xl bg-indigo-50 text-indigo-700">📌</span>
-        <h3 class="text-2xl font-bold">Tujuan Pembelajaran & Agenda (2 × 40 menit)</h3>
-      </div>
-      <div class="grid md:grid-cols-2 gap-6 text-sm">
-        <div>
-          <p class="font-semibold mb-2">Setelah pembelajaran ini, siswa dapat:</p>
-          <ul class="list-disc ml-5 space-y-1">
-            <li>Menjelaskan dampak kemajuan <b>transportasi</b> dan <b>komunikasi</b> pada perdagangan.</li>
-            <li>Mendefinisikan <b>E‑Commerce</b> dan menyebutkan model-modelnya (B2C, B2B, C2C, B2G).</li>
-            <li>Mengidentifikasi kelebihan dan risiko belanja online serta menerapkan prinsip <b>Respect–Educate–Protect</b>.</li>
-            <li>Membedakan alat & sistem pembayaran: <b>tunai</b>, <b>bank</b>, <b>e‑wallet</b>, <b>QRIS</b>, dan <b>fintech</b>.</li>
-            <li>Mensimulasikan faktor yang memengaruhi kelancaran perdagangan.</li>
-          </ul>
-        </div>
-        <div>
-          <p class="font-semibold mb-2">Rencana Waktu:</p>
-          <ul class="list-disc ml-5 space-y-1">
-            <li><b>5’</b> Apersepsi (pretest singkat).</li>
-            <li><b>20’</b> Materi inti bagian 1 (dampak T&K, E‑Commerce).</li>
-            <li><b>15’</b> Diskusi & studi kasus kecil.</li>
-            <li><b>10’</b> Simulator & refleksi 1.</li>
-            <li><b>10’</b> Materi bagian 2 (sistem pembayaran & fintech).</li>
-            <li><b>10’</b> LKPD/Proyek mini.</li>
-            <li><b>10’</b> Kuis formatif & refleksi akhir.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- MATERI INTI -->
-    <section id="materi" class="printable bg-white rounded-2xl shadow p-6 space-y-8 fade-up">
-      <h3 class="text-2xl font-bold mb-2">Materi Inti</h3>
-      <!-- Dampak Teknologi -->
-      <div class="grid md:grid-cols-3 gap-4">
-        <div class="p-4 rounded-xl border">
-          <h4 class="font-semibold mb-1">Transportasi Lebih Efisien</h4>
-          <p class="text-sm text-slate-600">Kapasitas muatan meningkat, pelacakan real‑time, dan jalur logistik yang makin optimal menurunkan biaya dan waktu.</p>
-        </div>
-        <div class="p-4 rounded-xl border">
-          <h4 class="font-semibold mb-1">Komunikasi Tanpa Batas</h4>
-          <p class="text-sm text-slate-600">Internet & aplikasi mempertemukan penjual–pembeli lintas wilayah, mempermudah negosiasi dan layanan purna jual.</p>
-        </div>
-        <div class="p-4 rounded-xl border">
-          <h4 class="font-semibold mb-1">Skala Perdagangan Meningkat</h4>
-          <p class="text-sm text-slate-600">Interaksi dagang makin masif. WTO (2019) mencatat transaksi global barang ~US$19T dan jasa ~US$5T.</p>
-        </div>
-      </div>
-
-      <!-- Grafik Ilustratif -->
-      <div class="grid md:grid-cols-2 gap-6 items-center">
-        <div>
-          <canvas id="chartPerdagangan" height="160"></canvas>
-        </div>
-        <div class="text-sm text-slate-700">
-          <p class="mb-2"><b>Grafik:</b> Ilustrasi pertumbuhan volume perdagangan dunia (1950–2019). Pada 2015, volume ~20× dibanding 1950 (sebagai konteks pembelajaran).</p>
-          <p>Faktor pendorong: peningkatan moda transportasi (udara, laut, darat), efisiensi gudang & distribusi, serta adopsi internet, perangkat mobile, dan platform marketplace.</p>
-        </div>
-      </div>
-
-      <!-- E-Commerce -->
-      <div class="grid md:grid-cols-2 gap-6 items-start">
-        <div>
-          <h4 class="font-semibold mb-2">Apa itu E‑Commerce?</h4>
-          <p class="text-sm text-slate-700">Kegiatan jual beli barang/jasa melalui media elektronik yang terhubung internet. Toko online memiliki etalase, stok, layanan pelanggan, hingga pembayaran terintegrasi dengan perbankan/penyedia pembayaran.</p>
-          <ul class="mt-3 text-sm list-disc ml-5 space-y-1">
-            <li><b>B2C:</b> Perusahaan → Konsumen.</li>
-            <li><b>B2B:</b> Perusahaan → Perusahaan.</li>
-            <li><b>C2C:</b> Konsumen → Konsumen (marketplace).</li>
-            <li><b>B2G:</b> Perusahaan → Pemerintah.</li>
-          </ul>
-        </div>
-        <div class="fade-up">
-          <img src="https://img.freepik.com/free-vector/ecommerce-concept-illustration_114360-2275.jpg" alt="Ilustrasi E‑Commerce" class="rounded-2xl border shadow"/>
-          <p class="text-xs mt-2 text-slate-500">Ilustrasi oleh Freepik</p>
-        </div>
-      </div>
-
-      <!-- Kelebihan & Risiko -->
-      <div class="grid md:grid-cols-2 gap-4">
-        <div class="p-4 rounded-xl border">
-          <h4 class="font-semibold">Kelebihan E‑Commerce</h4>
-          <ul class="mt-2 text-sm list-disc ml-5 space-y-1">
-            <li>Produk & layanan <b>bervariasi</b>.</li>
-            <li><b>Memperpendek</b> jalur distribusi, bahkan langsung dari produsen.</li>
-            <li>Pembayaran <b>mudah</b> (transfer, kartu, e‑wallet, QRIS).</li>
-            <li>Bisa belanja <b>kapan saja</b>, <b>di mana saja</b>.</li>
-            <li>Harga <b>bersaing</b> karena biaya operasional lebih rendah.</li>
-          </ul>
-        </div>
-        <div class="p-4 rounded-xl border">
-          <h4 class="font-semibold">Risiko & Cara Aman (R‑E‑P)</h4>
-          <ul class="mt-2 text-sm list-disc ml-5 space-y-1">
-            <li><b>Respect:</b> Hormati privasi & hak pihak lain, jangan sebar data pribadi.</li>
-            <li><b>Educate:</b> Baca ulasan, pahami kebijakan toko & pengembalian.</li>
-            <li><b>Protect:</b> Pakai 2FA, jangan bagikan OTP, gunakan kanal resmi berizin.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- SIMULATOR -->
-    <section id="simulator" class="printable bg-white rounded-2xl shadow p-6 fade-up">
-      <div class="flex items-center gap-2 mb-3"><span class="p-2 rounded-xl bg-indigo-50">🧪</span><h3 class="text-2xl font-bold">Simulator Perdagangan</h3></div>
-      <p class="text-sm text-slate-600 mb-4">Gerakkan slider untuk melihat bagaimana efisiensi transportasi, jangkauan komunikasi, dan kepercayaan/keamanan memengaruhi <b>Trade Index</b> (0–100).</p>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="space-y-4">
+  <main class="container">
+    <!-- ==================== TUJUAN ==================== -->
+    <section id="tujuan" class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">📌</span>Tujuan & Agenda</h3>
+        <div class="grid-2">
           <div>
-            <label class="text-sm font-medium">Efisiensi Transportasi: <span id="lblTransport">60</span></label>
-            <input id="slTransport" type="range" min="0" max="100" value="60" class="w-full"/>
+            <ul>
+              <li>Menjelaskan peran transportasi & komunikasi dalam perdagangan modern.</li>
+              <li>Mendefinisikan E‑Commerce & menyebutkan modelnya (B2C, B2B, C2C, B2G).</li>
+              <li>Menilai kelebihan & risiko belanja online, menerapkan <b>Respect–Educate–Protect</b>.</li>
+              <li>Mengenal sistem & alat pembayaran: tunai, bank, e‑wallet, QRIS, fintech.</li>
+              <li>Menggunakan simulator untuk melihat faktor pendorong perdagangan.</li>
+            </ul>
           </div>
           <div>
-            <label class="text-sm font-medium">Jangkauan Telekomunikasi: <span id="lblTelecom">70</span></label>
-            <input id="slTelecom" type="range" min="0" max="100" value="70" class="w-full"/>
+            <div class="ibox">
+              <h4>⏰ Rencana 2×40 menit</h4>
+              <ol>
+                <li>5’ Apersepsi + pretest</li>
+                <li>20’ Materi 1 (T&K + E‑Commerce)</li>
+                <li>10’ Diskusi kasus</li>
+                <li>10’ Simulator</li>
+                <li>15’ Materi 2 (Pembayaran + Fintech)</li>
+                <li>10’ LKPD</li>
+                <li>10’ Kuis & refleksi</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== MATERI ==================== -->
+    <section id="materi" class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">📚</span>Materi Inti</h3>
+        <div class="grid-2">
+          <div>
+            <div class="ibox">
+              <h4>🚚 Transportasi Lebih Efisien</h4>
+              <p>Kapasitas muatan meningkat, rute optimal, biaya turun → barang lebih cepat sampai.</p>
+            </div>
+            <div class="ibox">
+              <h4>📡 Komunikasi Tanpa Batas</h4>
+              <p>Internet mempertemukan penjual–pembeli lintas wilayah; layanan pelanggan makin responsif.</p>
+            </div>
+            <div class="ibox">
+              <h4>🛒 E‑Commerce</h4>
+              <p>Toko online dengan etalase, stok, chat, pengiriman, dan pembayaran terintegrasi.</p>
+              <ul class="muted">
+                <li><b>B2C</b>: Perusahaan → Konsumen</li>
+                <li><b>B2B</b>: Perusahaan → Perusahaan</li>
+                <li><b>C2C</b>: Konsumen → Konsumen (marketplace)</li>
+                <li><b>B2G</b>: Perusahaan → Pemerintah</li>
+              </ul>
+            </div>
           </div>
           <div>
-            <label class="text-sm font-medium">Kepercayaan & Keamanan: <span id="lblTrust">65</span></label>
-            <input id="slTrust" type="range" min="0" max="100" value="65" class="w-full"/>
+            <div class="ibox">
+              <h4>✨ Kelebihan E‑Commerce</h4>
+              <ul>
+                <li>Produk beragam, perbandingan mudah</li>
+                <li>Distribusi lebih pendek (bisa langsung produsen)</li>
+                <li>Pembayaran mudah (bank, kartu, e‑wallet, QRIS)</li>
+                <li>Bisa belanja kapan saja, di mana saja</li>
+                <li>Harga kompetitif (biaya operasional turun)</li>
+              </ul>
+            </div>
+            <div class="ibox">
+              <h4>⚠️ Risiko & Cara Aman (R‑E‑P)</h4>
+              <ul>
+                <li><b>Respect</b>: Hormati privasi, jangan sebar data</li>
+                <li><b>Educate</b>: Baca ulasan, pahami kebijakan</li>
+                <li><b>Protect</b>: 2FA, jangan bagikan OTP, gunakan kanal resmi</li>
+              </ul>
+            </div>
+            <div class="ibox">
+              <h4>🏫 Dekat dengan SMP</h4>
+              <p>Top‑up game via e‑wallet, bayar kantin pakai QRIS, belanja kebutuhan sekolah di marketplace.</p>
+            </div>
           </div>
         </div>
-        <div>
-          <canvas id="chartIndex" height="180"></canvas>
-          <p class="text-sm mt-2">Kategori: <b id="kategoriIndex">Berkembang</b></p>
-          <ul class="text-xs text-slate-600 list-disc ml-5 mt-1">
-            <li><b>0–39</b>: Hambatan tinggi.</li>
-            <li><b>40–69</b>: Berkembang.</li>
-            <li><b>70–100</b>: Mapan.</li>
-          </ul>
+      </div>
+    </section>
+
+    <!-- ==================== GRAFIK ==================== -->
+    <section id="grafik" class="fade">
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="title"><span class="icon">📈</span>Pertumbuhan Perdagangan Dunia (Ilustratif)</h3>
+          <div class="chart-wrap"><canvas id="chartWorld"></canvas></div>
+          <p class="muted">Ilustrasi: volume perdagangan dunia tumbuh pesat seiring kemajuan transportasi & komunikasi.</p>
+        </div>
+        <div class="card">
+          <h3 class="title"><span class="icon">🛍️</span>Transaksi E‑Commerce Indonesia (Ilustratif)</h3>
+          <div class="chart-wrap"><canvas id="chartIDN"></canvas></div>
+          <p class="muted">Contoh tren nilai transaksi e‑commerce 2018–2024 (angka ilustratif untuk pembelajaran).</p>
         </div>
       </div>
     </section>
 
-    <!-- SISTEM PEMBAYARAN -->
-    <section id="pembayaran" class="printable bg-white rounded-2xl shadow p-6 space-y-6 fade-up">
-      <div class="flex items-center gap-2 mb-2"><span class="p-2 rounded-xl bg-indigo-50">💳</span><h3 class="text-2xl font-bold">Sistem & Alat Pembayaran Modern</h3></div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-        <div class="p-4 rounded-xl border"><h4 class="font-semibold">Tunai</h4><p>Langsung, universal, tetapi berisiko hilang & tidak praktis untuk jarak jauh.</p></div>
-        <div class="p-4 rounded-xl border"><h4 class="font-semibold">Layanan Bank</h4><p>Transfer, kartu debit/kredit, mobile/internet banking. Gunakan OTP & notifikasi.</p></div>
-        <div class="p-4 rounded-xl border"><h4 class="font-semibold">Dompet Digital</h4><p>E‑wallet untuk QRIS, tagihan, promo. Pastikan akun terverifikasi & kunci aplikasi.</p></div>
-        <div class="p-4 rounded-xl border"><h4 class="font-semibold">QRIS</h4><p>Standar kode QR Indonesia, memudahkan pembayaran lintas penyelenggara.</p></div>
-      </div>
-      <div class="p-4 rounded-xl border text-sm">
-        <h4 class="font-semibold">Fintech di Indonesia (contoh)</h4>
-        <p class="text-slate-600">GoPay, OVO, DANA, LinkAja, ShopeePay (e‑wallet); Modalku & Amartha (P2P lending); Midtrans & Xendit (payment gateway). <br/>Catatan: penyelenggara sistem pembayaran wajib berizin & diawasi (misal: OJK untuk jasa keuangan).</p>
-      </div>
-    </section>
-
-    <!-- STUDI KASUS & DISKUSI -->
-    <section class="printable bg-white rounded-2xl shadow p-6 fade-up">
-      <h3 class="text-2xl font-bold mb-2">Studi Kasus Singkat</h3>
-      <p class="text-sm text-slate-700">Sebuah UMKM kopi di kota Anda mulai berjualan lewat marketplace dan menerima pembayaran QRIS. Dalam 6 bulan, omzet naik 35%. Diskusikan: faktor apa saja yang mendorong peningkatan? Risiko apa yang perlu diantisipasi? Tindakan R‑E‑P apa yang tepat?</p>
-    </section>
-
-    <!-- LKPD PRINTABLE -->
-    <section id="lkpd" class="printable bg-white rounded-2xl shadow p-6 space-y-4 fade-up">
-      <div class="flex items-center gap-2"><span class="p-2 rounded-xl bg-indigo-50">📝</span><h3 class="text-2xl font-bold">LKPD – Lembar Kerja Peserta Didik</h3></div>
-      <ol class="list-decimal ml-5 text-sm space-y-2">
-        <li>Jelaskan peran transportasi & komunikasi terhadap perdagangan di lingkunganmu.</li>
-        <li>Identifikasi 3 kelebihan dan 2 risiko E‑Commerce yang pernah kamu alami/lihat.</li>
-        <li>Gunakan <i>Simulator</i> di atas. Catat nilai Trade Index pada 3 skenario berbeda. Apa maknanya?</li>
-        <li>Bandingkan 3 alat pembayaran (tunai, transfer bank, e‑wallet) dari sisi kemudahan, biaya, dan keamanan.</li>
-        <li>Rancang poster digital bertema <b>“Belanja Online Aman: Respect – Educate – Protect”</b>.</li>
-      </ol>
-      <div class="text-xs text-slate-500">Tips: Tekan tombol "Cetak/PDF" di kanan atas untuk mencetak LKPD ini.</div>
-    </section>
-
-    <!-- KUIS INTERAKTIF -->
-    <section id="kuis" class="printable bg-white rounded-2xl shadow p-6 space-y-4 fade-up">
-      <div class="flex items-center gap-2 mb-2"><span class="p-2 rounded-xl bg-indigo-50">🎯</span><h3 class="text-2xl font-bold">Kuis Formatif</h3></div>
-      <p class="text-sm text-slate-600">Klik jawaban. Nilai dihitung otomatis.</p>
-      <div id="quiz" class="space-y-6 text-sm"></div>
-      <div class="flex items-center gap-3">
-        <button id="btnReset" class="no-print px-4 py-2 rounded-lg border hover:bg-slate-50">Ulangi Kuis</button>
-        <div id="scoreBox" class="font-semibold"></div>
+    <!-- ==================== SIMULATOR ==================== -->
+    <section id="simulator" class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">🧪</span>Simulator Perdagangan</h3>
+        <p class="muted">Geser slider: efisiensi transportasi, jangkauan komunikasi, dan kepercayaan/keamanan memengaruhi indeks perdagangan.</p>
+        <div class="grid-2">
+          <div>
+            <div class="kpi"><span>🚚</span><b>Transportasi</b> &nbsp;(<span id="valT">60</span>)</div>
+            <input class="slider" id="slT" type="range" min="0" max="100" value="60" />
+            <div class="kpi"><span>📡</span><b>Komunikasi</b> &nbsp;(<span id="valC">70</span>)</div>
+            <input class="slider" id="slC" type="range" min="0" max="100" value="70" />
+            <div class="kpi"><span>🔒</span><b>Kepercayaan</b> &nbsp;(<span id="valS">65</span>)</div>
+            <input class="slider" id="slS" type="range" min="0" max="100" value="65" />
+            <div class="ibox" style="margin-top:12px">
+              <b>Kategori:</b> <span id="labelCat">Berkembang</span>
+              <div class="scorebar" style="margin-top:8px"><span id="barScore"></span></div>
+            </div>
+          </div>
+          <div>
+            <div class="chart-wrap"><canvas id="chartIndex"></canvas></div>
+            <div class="chart-wrap" style="margin-top:12px"><canvas id="chartGauge"></canvas></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- GLOSARIUM & REFERENSI -->
-    <section class="printable bg-white rounded-2xl shadow p-6 grid md:grid-cols-2 gap-6 fade-up">
-      <div>
-        <h3 class="text-2xl font-bold mb-2">Glosarium</h3>
-        <ul class="text-sm space-y-1">
-          <li><b>E‑Commerce:</b> Perdagangan barang/jasa melalui internet.</li>
-          <li><b>Fintech:</b> Inovasi layanan keuangan berbasis teknologi.</li>
-          <li><b>QRIS:</b> Standar kode QR pembayaran Indonesia.</li>
-          <li><b>Payment Gateway:</b> Layanan pemroses transaksi online.</li>
-        </ul>
+    <!-- ==================== PEMBAYARAN ==================== -->
+    <section id="pembayaran" class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">💳</span>Sistem & Alat Pembayaran Modern</h3>
+        <div class="grid-4">
+          <div class="ibox"><h4>💵 Tunai</h4><p>Langsung & universal, kurang praktis jarak jauh.</p></div>
+          <div class="ibox"><h4>🏦 Bank</h4><p>Transfer, kartu debit/kredit, mobile & internet banking.</p></div>
+          <div class="ibox"><h4>📱 E‑Wallet</h4><p>OVO, GoPay, DANA, ShopeePay — cepat & banyak promo.</p></div>
+          <div class="ibox"><h4>🔳 QRIS</h4><p>Standar QR nasional, bayar lintas penyelenggara.</p></div>
+        </div>
+        <div class="ibox" style="margin-top:12px">
+          <h4>🏦💡 Fintech</h4>
+          <p>Payment gateway (Midtrans/Xendit), P2P lending (Modalku/Amartha), e‑wallet. Penyelenggara wajib berizin & diawasi (mis. OJK untuk jasa keuangan).</p>
+        </div>
       </div>
-      <div>
-        <h3 class="text-2xl font-bold mb-2">Referensi Ringkas</h3>
-        <ul class="text-sm space-y-1 list-disc ml-5">
-          <li>World Trade Organization. <i>World Trade Statistical Review</i> (konteks data 2019).</li>
-          <li>Bank Indonesia & OJK – Pedoman sistem pembayaran & QRIS.</li>
-          <li>Materi guru: “Perkembangan Transaksi Ekonomi di Era Digital”.</li>
-        </ul>
+    </section>
+
+    <!-- ==================== LKPD ==================== -->
+    <section id="lkpd" class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">📝</span>LKPD – Lembar Kerja Peserta Didik</h3>
+        <ol>
+          <li>Jelaskan pengaruh transportasi & komunikasi pada perdagangan di daerahmu.</li>
+          <li>Sebutkan 3 kelebihan & 2 risiko E‑Commerce yang kamu alami/lihat.</li>
+          <li>Coba simulator: catat nilai indeks pada 3 skenario berbeda & maknanya.</li>
+          <li>Bandingkan 3 alat pembayaran (tunai, bank, e‑wallet) dari sisi mudah, biaya, keamanan.</li>
+          <li>Buat poster "Belanja Online Aman: R‑E‑P".</li>
+        </ol>
+        <table style="margin-top:10px">
+          <tr><th>Aspek</th><th>Catatan/Kesimpulan</th></tr>
+          <tr><td>Transportasi</td><td><textarea></textarea></td></tr>
+          <tr><td>Komunikasi</td><td><textarea></textarea></td></tr>
+          <tr><td>Keamanan</td><td><textarea></textarea></td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== KUIS ==================== -->
+    <section id="kuis" class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">🎯</span>Kuis Formatif</h3>
+        <div id="quiz" class="quiz"></div>
+        <div class="ibox" style="margin-top:10px">
+          <div><b>Skor:</b> <span id="scoreTxt">0/0</span></div>
+          <div class="scorebar" style="margin-top:6px"><span id="scoreBar"></span></div>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <button id="btnReset" class="btn btn-ghost">🔄 Ulangi</button>
+            <button id="btnShowAns" class="btn btn-ghost">👀 Tampilkan Kunci</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== GLOSARIUM ==================== -->
+    <section class="fade">
+      <div class="card">
+        <h3 class="title"><span class="icon">📑</span>Glosarium & Referensi</h3>
+        <div class="grid-2">
+          <div>
+            <ul>
+              <li><b>E‑Commerce</b>: Perdagangan barang/jasa melalui internet.</li>
+              <li><b>Fintech</b>: Layanan keuangan berbasis teknologi.</li>
+              <li><b>QRIS</b>: Standar kode QR pembayaran Indonesia.</li>
+              <li><b>Payment Gateway</b>: Pemroses pembayaran online.</li>
+            </ul>
+          </div>
+          <div class="muted">
+            <p>Rujukan pembelajaran: WTO – indikator perdagangan global (konteks 2019), materi guru “Perkembangan Transaksi Ekonomi di Era Digital”, BI/OJK – pedoman sistem pembayaran & QRIS.</p>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="border-t mt-12 py-6 text-sm text-slate-600">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-2">
-      <div>© <span id="year"></span> — Disusun oleh <b>Muhammad Khairul, S.Pd, M.Pd</b></div>
-      <div class="text-slate-500">Modul Digital IPS SMP • TailwindCSS + Chart.js</div>
-    </div>
-  </footer>
+  <!-- ==================== FLOAT TOOLS ==================== -->
+  <div class="float-tools">
+    <button id="toTop" class="ghost print-hide" title="Kembali ke atas">⤴️</button>
+  </div>
 
-  <!-- SCRIPTS -->
   <script>
-    // Tahun footer
-    document.getElementById('year').textContent = new Date().getFullYear();
+    // ========= helpers =========
+    const $$ = (q,ctx=document)=>Array.from(ctx.querySelectorAll(q));
+    const $  = (q,ctx=document)=>ctx.querySelector(q);
 
-    // Tombol cetak
-    document.getElementById('btnPrint').addEventListener('click', () => window.print());
+    // ========= print & back-to-top =========
+    $('#btnPrint').addEventListener('click', ()=>window.print());
+    $('#toTop').addEventListener('click', ()=>window.scrollTo({top:0,behavior:'smooth'}));
 
-    // Animasi on-scroll
-    const onScroll = () => {
-      document.querySelectorAll('.fade-up').forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if(rect.top < window.innerHeight - 60) el.classList.add('show');
-      });
-    };
-    window.addEventListener('scroll', onScroll); onScroll();
+    // ========= on-scroll reveal =========
+    const onScroll = ()=>{$$('.fade').forEach(el=>{const r=el.getBoundingClientRect(); if(r.top<innerHeight-80) el.classList.add('show')})};
+    addEventListener('scroll', onScroll); onScroll();
 
-    // Grafik perdagangan (ilustratif)
-    new Chart(document.getElementById('chartPerdagangan').getContext('2d'), {
-      type: 'line',
-      data: {
-        labels: [1950,1960,1970,1980,1990,2000,2010,2015,2019],
-        datasets: [{
-          label: 'Volume Perdagangan (indeks)',
-          data: [1,1.8,3.5,6,9,13.5,18,20,22],
-          borderColor: 'rgb(79,70,229)',
-          backgroundColor: 'rgba(79,70,229,.15)',
-          tension: .35,
-          fill: true
-        }]
-      },
-      options: { plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+    // ========= charts (illustrative data) =========
+    const chartWorld = new Chart($('#chartWorld'),{
+      type:'line', data:{
+        labels:[1950,1960,1970,1980,1990,2000,2010,2015,2019],
+        datasets:[{label:'Indeks Volume Perdagangan', data:[1,2,3.6,6,9,13,18,20,22],
+          borderColor:'#4f46e5', backgroundColor:'rgba(79,70,229,.12)', tension:.35, fill:true}]},
+      options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
     });
 
-    // Simulator
-    const slT = document.getElementById('slTransport');
-    const slC = document.getElementById('slTelecom');
-    const slS = document.getElementById('slTrust');
-    const lblT = document.getElementById('lblTransport');
-    const lblC = document.getElementById('lblTelecom');
-    const lblS = document.getElementById('lblTrust');
-    const kategori = document.getElementById('kategoriIndex');
-    const chartIndex = new Chart(document.getElementById('chartIndex').getContext('2d'), {
-      type:'bar', data:{labels:['Indeks'], datasets:[{label:'Trade Index', data:[0]}]}, options:{plugins:{legend:{display:false}}, scales:{y:{min:0,max:100}}}
+    const chartIDN = new Chart($('#chartIDN'),{
+      type:'bar', data:{
+        labels:['2018','2019','2020','2021','2022','2023','2024'],
+        datasets:[{label:'Nilai Transaksi E‑Commerce (ilustratif, miliar USD)', data:[15,22,35,50,72,96,118], backgroundColor:'rgba(6,182,212,.55)', borderColor:'#06b6d4'}]},
+      options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
     });
-    function calcIndex(){
-      const t1 = Number(slT.value)/100, t2 = Number(slC.value)/100, t3 = Number(slS.value)/100;
-      const score = Math.round(40*t1 + 40*t2 + 20*t3);
-      chartIndex.data.datasets[0].data = [score]; chartIndex.update();
-      lblT.textContent = slT.value; lblC.textContent = slC.value; lblS.textContent = slS.value;
-      kategori.textContent = score<40? 'Hambatan Tinggi' : score<70? 'Berkembang' : 'Mapan';
+
+    // ========= simulator =========
+    const slT=$('#slT'), slC=$('#slC'), slS=$('#slS');
+    const valT=$('#valT'), valC=$('#valC'), valS=$('#valS');
+    const barScore=$('#barScore'), labelCat=$('#labelCat');
+
+    const chartIndex = new Chart($('#chartIndex'),{
+      type:'bar', data:{labels:['Indeks'], datasets:[{label:'Trade Index', data:[0], backgroundColor:'rgba(79,70,229,.6)'}]},
+      options:{plugins:{legend:{display:false}}, scales:{y:{min:0,max:100}}}
+    });
+
+    const chartGauge = new Chart($('#chartGauge'),{
+      type:'doughnut', data:{labels:['Skor','Sisa'], datasets:[{data:[0,100], backgroundColor:['#22c55e','#e5e7eb'], borderWidth:0}]} ,
+      options:{cutout:'70%', plugins:{legend:{display:false}}}
+    });
+
+    function updateSim(){
+      valT.textContent = slT.value; valC.textContent = slC.value; valS.textContent = slS.value;
+      const t=+slT.value/100, c=+slC.value/100, s=+slS.value/100;
+      const score=Math.round(40*t + 40*c + 20*s); // bobot 40/40/20
+      chartIndex.data.datasets[0].data=[score]; chartIndex.update();
+      chartGauge.data.datasets[0].data=[score,100-score]; chartGauge.update();
+      barScore.style.width=score+'%';
+      labelCat.textContent = score<40? 'Hambatan Tinggi' : score<70? 'Berkembang' : 'Mapan';
     }
-    [slT,slC,slS].forEach(el=> el.addEventListener('input', calcIndex));
-    calcIndex();
+    [slT,slC,slS].forEach(el=>el.addEventListener('input',updateSim));
+    updateSim();
 
-    // Bank soal kuis
+    // ========= quiz =========
     const bankSoal = [
-      {q:'Dua bidang teknologi yang paling menentukan perkembangan perdagangan modern adalah…', o:['Pertanian & konstruksi','Transportasi & komunikasi','Energi & pendidikan','Pariwisata & kesehatan'], a:1},
-      {q:'E‑Commerce adalah…', o:['Jual-beli di pasar tradisional','Jual-beli melalui media elektronik/internet','Kegiatan promosi di media sosial','Ekspor impor tanpa bea'], a:1},
-      {q:'Manakah BUKAN keuntungan E‑Commerce?', o:['Variasi produk','Memotong jalur distribusi','Selalu lebih mahal','Bisa belanja kapan saja'], a:2},
-      {q:'Contoh pembayaran nontunai via bank adalah…', o:['Barter','Transfer rekening/kartu debit-kredit','Bilyet giro kuno','Cek mundur'], a:1},
-      {q:'Fintech adalah…', o:['Teknologi pertanian','Gabungan jasa keuangan & teknologi','Teknik menggambar finansial','Sistem logistik maritim'], a:1},
-      {q:'Standar kode QR nasional di Indonesia adalah…', o:['NFC','QRIS','RFID','OTP'], a:1},
-      {q:'Prinsip “Protect” berarti…', o:['Bagikan OTP agar cepat','Gunakan 2FA & kanal resmi','Abaikan kebijakan toko','Klik semua tautan promo'], a:1},
-      {q:'Model C2C berarti…', o:['Perusahaan ke konsumen','Konsumen ke konsumen (marketplace)','Perusahaan ke pemerintah','Pemerintah ke warga'], a:1},
-      {q:'Siapa pengatur/otoritas jasa keuangan di Indonesia?', o:['UNESCO','WHO','OJK','KPK'], a:2},
-      {q:'Tujuan payment gateway adalah…', o:['Menjaga gudang','Memproses pembayaran online','Mengirim barang','Membuat iklan'], a:1},
+      {q:'Dua bidang teknologi yang paling menentukan perkembangan perdagangan modern adalah…', a:['Pertanian & konstruksi','Transportasi & komunikasi','Energi & pendidikan','Pariwisata & kesehatan'], k:1},
+      {q:'E‑Commerce adalah…', a:['Jual-beli di pasar tradisional','Jual-beli melalui media elektronik/internet','Kegiatan promosi saja','Ekspor impor tanpa bea'], k:1},
+      {q:'Manakah BUKAN keuntungan E‑Commerce?', a:['Variasi produk','Distribusi bisa lebih pendek','Selalu lebih mahal','Belanja kapan saja'], k:2},
+      {q:'Contoh pembayaran nontunai via bank adalah…', a:['Barter','Transfer/kartu debit-kredit','Bilyet giro kuno','Cek mundur'], k:1},
+      {q:'Fintech adalah…', a:['Teknologi pertanian','Layanan keuangan berbasis teknologi','Teknik menggambar finansial','Sistem logistik maritim'], k:1},
+      {q:'Standar kode QR nasional di Indonesia adalah…', a:['NFC','QRIS','RFID','OTP'], k:1},
+      {q:'Prinsip “Protect” berarti…', a:['Bagikan OTP agar cepat','Gunakan 2FA & kanal resmi','Abaikan kebijakan toko','Klik semua tautan promo'], k:1},
+      {q:'Model C2C berarti…', a:['Perusahaan → Konsumen','Konsumen → Konsumen (marketplace)','Perusahaan → Pemerintah','Pemerintah → Warga'], k:1},
+      {q:'Pengawasan jasa keuangan di Indonesia dilakukan oleh…', a:['UNESCO','WHO','OJK','KPK'], k:2},
+      {q:'Payment gateway bertugas untuk…', a:['Menjaga gudang','Memproses pembayaran online','Mengirim barang','Membuat iklan'], k:1}
     ];
 
-    const quizEl = document.getElementById('quiz');
-    const scoreBox = document.getElementById('scoreBox');
+    const quiz = $('#quiz');
+    const scoreTxt = $('#scoreTxt');
+    const scoreBar = $('#scoreBar');
     let jawaban = Array(bankSoal.length).fill(null);
 
     function renderQuiz(){
-      quizEl.innerHTML = '';
-      bankSoal.forEach((s, i)=>{
-        const wrap = document.createElement('div');
-        wrap.className = 'p-4 rounded-xl border';
-        wrap.innerHTML = `<p class="font-medium mb-2">${i+1}. ${s.q}</p>` + s.o.map((opt,idx)=>
-          `<button data-i="${i}" data-v="${idx}" class="opt w-full text-left px-3 py-2 rounded-lg border mb-2 hover:bg-slate-50">${opt}</button>`
+      quiz.innerHTML='';
+      bankSoal.forEach((s,i)=>{
+        const card=document.createElement('div'); card.className='qcard';
+        const letters=['A','B','C','D'];
+        card.innerHTML = `<div><b>${i+1}.</b> ${s.q}</div>` + s.a.map((t,idx)=>
+          `<div class="opt" data-i="${i}" data-v="${idx}"><span class="badge">${letters[idx]}</span> ${t}</div>`
         ).join('');
-        quizEl.appendChild(wrap);
+        quiz.appendChild(card);
       });
-      document.querySelectorAll('.opt').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-          const i = Number(e.currentTarget.dataset.i);
-          const v = Number(e.currentTarget.dataset.v);
-          jawaban[i] = v;
-          // tandai warna
-          const group = e.currentTarget.parentElement.querySelectorAll('.opt');
-          group.forEach(g=>{g.classList.remove('bg-green-100','bg-red-100','border-green-400','border-red-400')});
-          if(v === bankSoal[i].a){
-            e.currentTarget.classList.add('bg-green-100','border-green-400');
-          } else {
-            e.currentTarget.classList.add('bg-red-100','border-red-400');
-          }
-          hitungSkor();
-        });
-      });
-      hitungSkor();
+      $$('.opt',quiz).forEach(btn=>btn.addEventListener('click', onPick));
+      updateScore();
     }
 
-    function hitungSkor(){
-      const benar = jawaban.reduce((acc,v,i)=> acc + (v===bankSoal[i].a?1:0), 0);
-      scoreBox.textContent = `Skor: ${benar} / ${bankSoal.length}`;
+    function onPick(e){
+      const btn=e.currentTarget; const i=+btn.dataset.i; const v=+btn.dataset.v; const k=bankSoal[i].k;
+      jawaban[i]=v; // mark
+      // clear group
+      $$('.opt', btn.parentElement).forEach(o=>o.classList.remove('correct','wrong'));
+      btn.classList.add(v===k? 'correct':'wrong');
+      updateScore();
     }
 
-    document.getElementById('btnReset').addEventListener('click', ()=>{ jawaban = Array(bankSoal.length).fill(null); renderQuiz(); });
+    function updateScore(){
+      const benar = jawaban.reduce((n,v,i)=> n + (v===bankSoal[i].k?1:0), 0);
+      scoreTxt.textContent = `${benar}/${bankSoal.length}`;
+      scoreBar.style.width = (benar/bankSoal.length*100)+'%';
+    }
+
+    $('#btnReset').addEventListener('click',()=>{jawaban.fill(null); renderQuiz();});
+    $('#btnShowAns').addEventListener('click',()=>{
+      // highlight kunci
+      $$('.qcard').forEach((card,i)=>{
+        const k=bankSoal[i].k; const opts=$$('.opt',card);
+        opts.forEach((o,idx)=>{o.classList.remove('wrong','correct'); if(idx===k) o.classList.add('correct');});
+      });
+    });
+
     renderQuiz();
   </script>
 </body>
 </html>
-
